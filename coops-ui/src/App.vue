@@ -143,6 +143,7 @@ export default {
     getJWT () {
       const token = sessionStorage.getItem('KEYCLOAK_TOKEN')
       if (token) {
+        console.log(this.parseJwt(token))
         return this.parseJwt(token)
       } else {
         throw new Error('Keycloak Token is null')
@@ -236,8 +237,9 @@ export default {
 
     storeEntityInfo (response) {
       if (response && response.data && response.data.business) {
+        console.log(response)
         this.setEntityName(response.data.business.legalName)
-        this.setEntityType(response.data.business.legalType)
+        this.setEntityType(EntityTypes.Coop)
         this.setNextARDate(response.data.business.nextAnnualReport)
         this.setEntityStatus(response.data.business.status)
         this.setEntityBusinessNo(response.data.business.taxId)

@@ -2,6 +2,7 @@ import Dashboard from '@/views/Dashboard.vue'
 import AnnualReport from '@/views/AnnualReport.vue'
 import StandaloneDirectorsFiling from '@/views/StandaloneDirectorsFiling.vue'
 import StandaloneOfficeAddressFiling from '@/views/StandaloneOfficeAddressFiling.vue'
+import CODSummary from '@/views/CODSummary.vue'
 
 export default [
   {
@@ -36,6 +37,14 @@ export default [
     path: '/standalone-addresses',
     name: 'standalone-addresses',
     component: StandaloneOfficeAddressFiling,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/directors-summary',
+    name: 'directors-summary',
+    component: CODSummary,
     meta: {
       requiresAuth: true
     }
