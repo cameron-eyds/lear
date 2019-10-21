@@ -152,77 +152,6 @@ describe('Standalone Directors Filing - Part 1 - UI', () => {
 
     wrapper.destroy()
   })
-
-  it('enables File & Pay button when Validated is true', () => {
-    const localVue = createLocalVue()
-    localVue.use(VueRouter)
-    const router = mockRouter.mock()
-    router.push({ name: 'standalone-directors', params: { id: '0' } }) // new filing id
-    const wrapper = mount(StandaloneDirectorsFiling, {
-      store,
-      localVue,
-      router,
-      stubs: {
-        Directors: true,
-        Certify: true,
-        Affix: true,
-        SbcFeeSummary: true,
-        ConfirmDialog: true,
-        PaymentErrorDialog: true,
-        ResumeErrorDialog: true,
-        SaveErrorDialog: true
-      },
-      vuetify
-    })
-    const vm: any = wrapper.vm
-
-    // set flag
-    vm.directorFormValid = true
-    vm.certifyFormValid = true
-
-    // set stub list of filings
-    vm.filingData.push({})
-
-    // confirm that button is enabled
-    expect(wrapper.find('#cod-file-pay-btn').attributes('disabled')).not.toBe('true')
-
-    wrapper.destroy()
-  })
-
-  it('disables File & Pay button when Validated is false', () => {
-    const localVue = createLocalVue()
-    localVue.use(VueRouter)
-    const router = mockRouter.mock()
-    router.push({ name: 'standalone-directors', params: { id: '0' } }) // new filing id
-    const wrapper = mount(StandaloneDirectorsFiling, {
-      store,
-      localVue,
-      router,
-      stubs: {
-        Directors: true,
-        Certify: true,
-        Affix: true,
-        SbcFeeSummary: true,
-        ConfirmDialog: true,
-        PaymentErrorDialog: true,
-        ResumeErrorDialog: true,
-        SaveErrorDialog: true
-      },
-      vuetify
-    })
-    const vm: any = wrapper.vm
-    // set flag
-    vm.directorFormValid = true
-    vm.certifyFormValid = false
-
-    // set stub list of filings
-    vm.filingData.push({})
-
-    // confirm that button is disabled
-    expect(wrapper.find('#cod-file-pay-btn').attributes('disabled')).toBe('disabled')
-
-    wrapper.destroy()
-  })
 })
 
 describe('Standalone Directors Filing - Part 2 - Resuming', () => {
@@ -400,6 +329,81 @@ describe('Standalone Directors Filing - Part 3 - Submitting', () => {
     sinon.restore()
   })
 
+  it('enables File & Pay button when Validated is true', () => {
+    const localVue = createLocalVue()
+    localVue.use(VueRouter)
+    const router = mockRouter.mock()
+    router.push({ name: 'standalone-directors', params: { id: '0' } }) // new filing id
+
+    const wrapper = mount(StandaloneDirectorsFiling, {
+      store,
+      localVue,
+      router,
+      stubs: {
+        Directors: true,
+        Certify: true,
+        Affix: true,
+        SbcFeeSummary: true,
+        ConfirmDialog: true,
+        PaymentErrorDialog: true,
+        ResumeErrorDialog: true,
+        SaveErrorDialog: true
+      },
+      vuetify
+    })
+    const vm: any = wrapper.vm
+
+    // set flag
+    vm.inFilingReview = true
+    vm.directorFormValid = true
+    vm.certifyFormValid = true
+
+    // set stub list of filings
+    vm.filingData.push({})
+
+    // confirm that button is enabled
+    expect(wrapper.find('#cod-file-pay-btn').attributes('disabled')).not.toBe('true')
+
+    wrapper.destroy()
+  })
+
+  it('disables File & Pay button when Validated is false', () => {
+    const localVue = createLocalVue()
+    localVue.use(VueRouter)
+    const router = mockRouter.mock()
+    router.push({ name: 'standalone-directors', params: { id: '0' } }) // new filing id
+
+    const wrapper = mount(StandaloneDirectorsFiling, {
+      store,
+      localVue,
+      router,
+      stubs: {
+        Directors: true,
+        Certify: true,
+        Affix: true,
+        SbcFeeSummary: true,
+        ConfirmDialog: true,
+        PaymentErrorDialog: true,
+        ResumeErrorDialog: true,
+        SaveErrorDialog: true
+      },
+      vuetify
+    })
+    const vm: any = wrapper.vm
+    // set flag
+    vm.inFilingReview = true
+    vm.directorFormValid = true
+    vm.certifyFormValid = false
+
+    // set stub list of filings
+    vm.filingData.push({})
+
+    // confirm that button is disabled
+    expect(wrapper.find('#cod-file-pay-btn').attributes('disabled')).toBe('disabled')
+
+    wrapper.destroy()
+  })
+
   it('saves a new filing and redirects to Pay URL when this is a new AR and the File & Pay button is clicked',
     async () => {
       // set necessary session variables
@@ -429,6 +433,7 @@ describe('Standalone Directors Filing - Part 3 - Submitting', () => {
       const vm: any = wrapper.vm as any
 
       // make sure form is validated
+      vm.inFilingReview = true
       vm.directorFormValid = true
       vm.certifyFormValid = true
       vm.filingData = [{ filingTypeCode: 'OTCDR', entityType: 'CP' }] // dummy data
@@ -440,7 +445,7 @@ describe('Standalone Directors Filing - Part 3 - Submitting', () => {
       // TODO: verify that new filing was created
 
       const button = wrapper.find('#cod-file-pay-btn')
-      expect(button.attributes('disabled')).toBeUndefined()
+      expect(wrapper.find('#cod-file-pay-btn').attributes('disabled')).not.toBe('true')
 
       // click the File & Pay button
       button.trigger('click')
@@ -492,6 +497,7 @@ describe('Standalone Directors Filing - Part 3 - Submitting', () => {
     const vm: any = wrapper.vm as any
 
     // make sure form is validated
+    vm.inFilingReview = true
     vm.directorFormValid = true
     vm.certifyFormValid = true
     vm.filingData = [{}] // dummy data
@@ -503,7 +509,7 @@ describe('Standalone Directors Filing - Part 3 - Submitting', () => {
     // TODO: verify that draft filing was fetched
 
     const button = wrapper.find('#cod-file-pay-btn')
-    expect(button.attributes('disabled')).toBeUndefined()
+    expect(wrapper.find('#cod-file-pay-btn').attributes('disabled')).not.toBe('true')
 
     // click the File & Pay button
     button.trigger('click')
@@ -550,6 +556,7 @@ describe('Standalone Directors Filing - Part 3 - Submitting', () => {
     const vm: any = wrapper.vm as any
 
     // make sure form is validated
+    vm.inFilingReview = true
     vm.directorFormValid = true
     vm.certifyFormValid = true
     vm.filingData = [{}] // dummy data
@@ -658,6 +665,7 @@ describe('Standalone Directors Filing - Part 4 - Saving', () => {
     const vm = wrapper.vm as any
 
     // make sure form is validated
+    vm.inFilingReview = true
     vm.directorFormValid = true
     vm.certifyFormValid = true
 
@@ -949,6 +957,7 @@ describe('Standalone Directors Filing - Part 6 - Error/Warning dialogues', () =>
       })
       const vm: any = wrapper.vm as any
       // make sure form is validated
+      vm.inFilingReview = true
       vm.directorFormValid = true
       vm.certifyFormValid = true
 
@@ -997,6 +1006,7 @@ describe('Standalone Directors Filing - Part 6 - Error/Warning dialogues', () =>
       })
       const vm: any = wrapper.vm as any
       // make sure form is validated
+      vm.inFilingReview = true
       vm.directorFormValid = true
       vm.certifyFormValid = true
 
