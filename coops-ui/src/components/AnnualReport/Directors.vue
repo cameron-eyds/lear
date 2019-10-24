@@ -42,9 +42,9 @@
         <ul class="list new-director" v-show="showNewDirectorForm">
           <li class="container">
             <div class="meta-container">
-              <label>Appoint New Director</label>
               <div class="meta-container__inner">
-                <v-form ref="newDirectorForm" v-on:submit.prevent="addNewDirector" v-model="directorFormValid"
+                <label class="appoint-header">Appoint New Director</label>
+                <v-form class="appoint-form" ref="newDirectorForm" v-on:submit.prevent="addNewDirector" v-model="directorFormValid"
                         lazy-validation>
                   <div class="form__row three-column">
                     <v-text-field filled class="item" label="First Name" id="new-director__first-name"
@@ -147,9 +147,6 @@
                   -->
 
                   <div class="form__row form__btns">
-                    <v-btn color="error" disabled>
-                      <span>Remove</span>
-                    </v-btn>
                     <v-btn class="form-cancel-btn" @click="cancelNewDirector">Cancel</v-btn>
                     <v-btn class="form-primary-btn" @click="validateNewDirectorForm" color="primary">Done</v-btn>
                   </div>
@@ -1408,6 +1405,10 @@ export default class Directors extends Mixins(DateMixin, ExternalMixin, EntityFi
     font-size: 1rem;
     font-weight: bold;
     line-height: 1.5rem;
+  }
+
+  .appoint-form {
+    margin-top: 2rem;
   }
 
   .address-sub-header {
