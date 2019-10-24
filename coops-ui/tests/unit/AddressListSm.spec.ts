@@ -37,7 +37,29 @@ describe('AddressListSm', () => {
     })
   })
 
-  it('displays the mailing address', done => {
+  it('displays the Registered office delivery address', done => {
+    // init store
+    store.state.mailingAddress = null
+    store.state.deliveryAddress = {
+      'streetAddress': '220 Buchanan St',
+      'addressCity': 'Glasgow',
+      'addressRegion': 'Scotland',
+      'postalCode': 'G1 2FFF',
+      'addressCountry': 'UK'
+    }
+
+    Vue.nextTick(() => {
+      expect(vm.mailingAddress).toBeNull()
+      expect(vm.deliveryAddress).not.toBeNull()
+      expect(vm.$el.querySelectorAll('.v-list-item').length).toEqual(1)
+      expect(vm.$el.querySelector('.v-list-item__title').textContent).toBe('Delivery Address')
+      expect(vm.$el.querySelector('.address-info').textContent).toContain('Glasgow Scotland')
+
+      done()
+    })
+  })
+
+  it('displays the Registered office mailing address', done => {
     // init store
     store.state.mailingAddress = {
       'streetAddress': '1012 Douglas St',
@@ -59,7 +81,7 @@ describe('AddressListSm', () => {
     })
   })
 
-  it('displays the delivery address', done => {
+  it('displays the Record office delivery address as BCORP', done => {
     // init store
     store.state.mailingAddress = null
     store.state.deliveryAddress = {
@@ -76,6 +98,28 @@ describe('AddressListSm', () => {
       expect(vm.$el.querySelectorAll('.v-list-item').length).toEqual(1)
       expect(vm.$el.querySelector('.v-list-item__title').textContent).toBe('Delivery Address')
       expect(vm.$el.querySelector('.address-info').textContent).toContain('Glasgow Scotland')
+
+      done()
+    })
+  })
+
+  it('displays the Record office mailing address as BCORP', done => {
+    // init store
+    store.state.mailingAddress = {
+      'streetAddress': '1012 Douglas St',
+      'addressCity': 'Victoria',
+      'addressRegion': 'BC',
+      'postalCode': 'V8W 2C3',
+      'addressCountry': 'CA'
+    }
+    store.state.deliveryAddress = null
+
+    Vue.nextTick(() => {
+      expect(vm.mailingAddress).not.toBeNull()
+      expect(vm.deliveryAddress).toBeNull()
+      expect(vm.$el.querySelectorAll('.v-list-item').length).toEqual(1)
+      expect(vm.$el.querySelector('.v-list-item__title').textContent).toBe('Mailing Address')
+      expect(vm.$el.querySelector('.address-info').textContent).toContain('Victoria BC')
 
       done()
     })

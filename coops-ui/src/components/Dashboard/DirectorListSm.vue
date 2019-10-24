@@ -114,7 +114,6 @@ export default class DirectorListSm extends Mixins(EntityFilterMixin, AddressMix
   }
 
   .v-list-item__content {
-    padding: 0;
     margin-left: $avatar-width;
   }
 
