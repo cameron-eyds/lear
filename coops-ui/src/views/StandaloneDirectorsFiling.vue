@@ -289,7 +289,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['currentDate', 'entityName', 'entityIncNo', 'entityFoundingDate']),
+    ...mapState(['currentDate', 'entityType', 'entityName', 'entityIncNo', 'entityFoundingDate']),
 
     ...mapGetters(['isRoleStaff']),
 
@@ -540,7 +540,7 @@ export default {
         }
       }
       if (setting === 'add' && !added) {
-        this.filingData.push({ filingTypeCode: filing, entityType: 'CP' })
+        this.filingData.push({ filingTypeCode: filing, entityType: this.entityType })
       }
     },
 

@@ -13,6 +13,7 @@ import Directors from '@/components/AnnualReport/Directors.vue'
 import VueRouter from 'vue-router'
 import mockRouter from './mockRouter'
 import { BAD_REQUEST } from 'http-status-codes'
+import { EntityTypes } from '@/enums';
 
 Vue.use(Vuetify)
 Vue.use(Vuelidate)
@@ -406,6 +407,9 @@ describe('Standalone Directors Filing - Part 3 - Submitting', () => {
 
   it('saves a new filing and redirects to Pay URL when this is a new AR and the File & Pay button is clicked',
     async () => {
+      // Init store
+      store.state.entityType = EntityTypes.BCorp
+
       // set necessary session variables
       sessionStorage.setItem('BASE_URL', `myhost/${process.env.VUE_APP_PATH}/`)
       sessionStorage.setItem('AUTH_URL', `myhost/${process.env.VUE_APP_AUTH_PATH}/`)
@@ -436,7 +440,7 @@ describe('Standalone Directors Filing - Part 3 - Submitting', () => {
       vm.inFilingReview = true
       vm.directorFormValid = true
       vm.certifyFormValid = true
-      vm.filingData = [{ filingTypeCode: 'OTCDR', entityType: 'CP' }] // dummy data
+      vm.filingData = [{ filingTypeCode: 'OTCDR', entityType: vm.entityType }] // dummy data
       expect(vm.validated).toEqual(true)
 
       // sanity check
